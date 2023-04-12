@@ -1,0 +1,46 @@
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func ping(c chan string){
+	for i:=0; ; i++{
+		c <- "ping"
+	}
+}
+
+func pong(d chan string){
+	for f:=0; ; f++{
+		d <- "pong"
+	}
+}
+
+func impc(c chan string){
+	for{
+		msg1 := <-c
+		fmt.Println(msg1)
+		time.Sleep(time.Second *1)
+	}
+}
+
+func impd(d chan string){
+	for{
+		msg2:=<-d
+		fmt.Println(msg2)
+		time.Sleep(time.Second *1)
+	}
+}
+
+func main(){
+	var c chan string = make(chan string)
+	var d chan string = make(chan string)
+	go ping(c)
+	go impc(c)
+	go pong(d)
+	go impd(d)
+
+	var entrada string
+	fmt.Scanln(&entrada)
+}
